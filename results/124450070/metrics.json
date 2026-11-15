@@ -1,6 +1,9 @@
 {
   "metrik": {
-    "baris_silver": 0
+    "baris_mentah": 1799,
+    "tabel_sumber": 14,
+    "berkas_raw": 14,
+    "kolom_gabungan": 61
   },
   "seed": 0,
   "data_hash": "9a01bf740426ca148baadaf5590fb8209a9fa77f4cf4c00d62c30ef3463fc71e",
