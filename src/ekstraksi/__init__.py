@@ -1,11 +1,17 @@
-"""Tahap 1 — Ekstraksi (pertemuan X). Milik tim.
+"""Tahap 1 — Orkestrasi ekstraksi Kasus 10."""
 
-Baca setiap berkas di data/raw/ (CSV, JSON WebAPI BPS, XLSX BNPB, SDMX ILO, JSON WDI) menjadi
-DataFrame mentah yang setia pada sumbernya: jangan membersihkan di sini, cukup ratakan struktur
-dan catat asal tiap baris (`_berkas_raw` relatif data/raw/, `_sha256_raw` dari src.common.manifest).
-"""
+from src.ekstraksi.bps import baca_bps
+from src.ekstraksi.ilostat import baca_ilostat
+from src.ekstraksi.wdi import baca_wdi
 
 
 def jalankan():
-    """Kembalikan {nama_sumber: DataFrame mentah}."""
-    raise NotImplementedError("Tahap 1: tulis pembaca untuk tiap format di data/raw/")
+    """Mengembalikan hasil ekstraksi berdasarkan sumber data."""
+
+    hasil = {
+        "bps": baca_bps(),
+        "ilostat": baca_ilostat(),
+        "wdi": baca_wdi(),
+    }
+
+    return hasil
