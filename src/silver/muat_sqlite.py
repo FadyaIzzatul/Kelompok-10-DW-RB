@@ -8,7 +8,7 @@ import sqlite3
 import pandas as pd
 
 from src.common.skema import KOLOM, periksa_silver
-from src.silver import SILVER_PARQUET
+from src.silver import OUTPUT_SILVER
 
 DDL = Path(__file__).with_name("silver.sql")
 KOLOM_SQL = (*KOLOM, "obs_status", "definisi_indikator")
@@ -40,7 +40,7 @@ def muat_silver(parquet, basis_data):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--parquet", type=Path, default=SILVER_PARQUET)
+    parser.add_argument("--parquet", type=Path, default=OUTPUT_SILVER)
     parser.add_argument("--basis-data", type=Path, default=Path("data/silver/silver.sqlite3"))
     argumen = parser.parse_args()
     try:
