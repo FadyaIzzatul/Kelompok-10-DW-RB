@@ -97,7 +97,7 @@ Keterbatasan yang perlu diperhatikan adalah perbedaan definisi antarseri, kemung
 | Anggota | NIM | Komponen | Tugas sampingan |
 |---|---|---|---|
 | Fitra Pratama Mega | 124450070 | Ekstraksi dan lineage | Analis utama |
-| Fadya Izzatul 'Aini | 124450051 | Profil dan pembersihan | Penjaga data dan evaluasi |
-| Ahmad Zidane Rabbaanee | 124450062 | Transformasi dan panel | Integrator |
+| Fadya Izzatul 'Aini | 124450062 | Profil dan pembersihan | Penjaga data dan evaluasi |
+| Ahmad Zidane Rabbaanee | 124450130 | Transformasi dan panel | Integrator |
 | Sekar Dini Widya Putri | 124450082 | Integrasi, penyimpanan, dan skala | Koordinator |
-| Najla Nursyifa | 124450130 | Validasi dan dokumentasi | Reproduksi dan demo |
+| Najla Nursyifa | 124450051 | Validasi dan dokumentasi | Reproduksi dan demo |
