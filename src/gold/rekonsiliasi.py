@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.common.manifest import periksa
-from src.ekstraksi import jalankan as ekstrak
+from src.ekstraksi import baca_bps, baca_ilostat, baca_wdi
 
 PASANGAN = (
     ("var2003", "SDG_T552_NOC_RT"),
@@ -66,7 +66,7 @@ def main():
     if salah:
         raise SystemExit("Snapshot tidak cocok dengan MANIFEST.csv. Jalankan ulang unduh_data.py.")
 
-    tabel = tabel_nasional(ekstrak())
+    tabel = tabel_nasional({**baca_bps(), **baca_ilostat(), **baca_wdi()})
     tabel.to_csv(TUJUAN, lineterminator="\n")
     tahun_beririsan = set()
     for kiri, kanan in PASANGAN:
