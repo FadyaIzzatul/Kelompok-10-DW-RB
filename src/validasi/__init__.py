@@ -133,19 +133,85 @@ def jalankan(silver=None, gold=None) -> dict:
     # ---------------------------------------------------------
     # ATURAN 5: Setiap baris ILO punya OBS_STATUS terdaftar di DSD (atau kosong)
     # ---------------------------------------------------------
+    
     kode_dsd_resmi = _ambil_kode_obs_status_dsd()
-    if "obs_status" in df_ilo.columns and not df_ilo.empty:
-        obs_ilo = df_ilo["obs_status"].fillna("").astype(str).str.strip().str.upper()
-        tidak_terdaftar = obs_ilo[~obs_ilo.isin(kode_dsd_resmi)]
+
+    if not df_ilo.empty and (
+        "obs_status" in df_ilo.columns or "rincian" in df_ilo.columns
+    ):
+        def ambil_status_rincian(nilai):
+            """Mengambil OBS_STATUS dari metadata JSON rincian."""
+            if nilai is None:
+                return ""
+
+            if isinstance(nilai, float) and pd.isna(nilai):
+                return ""
+
+            if isinstance(nilai, str):
+                if not nilai.strip():
+                    return ""
+                try:
+                    nilai = json.loads(nilai)
+                except json.JSONDecodeError:
+                    return "__JSON_INVALID__"
+
+            if isinstance(nilai, dict):
+                for k, v in nilai.items():
+                    if str(k).upper() == "OBS_STATUS":
+                        return "" if v is None else str(v).strip()
+
+                for v in nilai.values():
+                    hasil = ambil_status_rincian(v)
+                    if hasil:
+                        return hasil
+
+            elif isinstance(nilai, list):
+                for item in nilai:
+                    hasil = ambil_status_rincian(item)
+                    if hasil:
+                        return hasil
+
+            return ""
+
+        status_list = []
+
+        for _, baris in df_ilo.iterrows():
+            status = ""
+
+            # Prioritaskan kolom obs_status jika terisi
+            if "obs_status" in df_ilo.columns:
+                nilai = baris["obs_status"]
+                if pd.notna(nilai) and str(nilai).strip():
+                    status = str(nilai).strip()
+
+            # Jika kosong, baca dari kolom rincian
+            if not status and "rincian" in df_ilo.columns:
+                status = ambil_status_rincian(baris["rincian"])
+
+            status_list.append(status.upper())
+
+        obs_ilo = pd.Series(status_list, index=df_ilo.index)
+
+        tidak_terdaftar = obs_ilo[
+            ~obs_ilo.isin(kode_dsd_resmi)
+        ]
+
         lolos_5 = len(tidak_terdaftar) == 0
         status_ditemukan = sorted(obs_ilo.unique().tolist())
+
         detail_aturan["5_validitas_obs_status_ilo_dsd"] = (
-            f"Kode OBS_STATUS di data ILO = {status_ditemukan}; terdaftar di DSD/kosong, ilegal = {len(tidak_terdaftar)} baris."
+            f"Kode OBS_STATUS di data ILO = {status_ditemukan}; "
+            f"terdaftar di DSD/kosong, "
+            f"ilegal = {len(tidak_terdaftar)} baris."
         )
     else:
         lolos_5 = False
-        detail_aturan["5_validitas_obs_status_ilo_dsd"] = "Kolom obs_status tidak ditemukan pada baris ILO."
+        detail_aturan["5_validitas_obs_status_ilo_dsd"] = (
+            "Kolom obs_status dan rincian tidak ditemukan pada baris ILO."
+        )
+
     hasil_aturan["5_validitas_obs_status_ilo_dsd"] = lolos_5
+
 
     total_aturan = len(hasil_aturan)
     total_lolos = sum(1 for v in hasil_aturan.values() if v)
