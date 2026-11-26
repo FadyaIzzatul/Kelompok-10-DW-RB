@@ -1,3 +1,4 @@
+
 """Tahap 4–6 — Pembentukan dan penyimpanan panel Gold."""
 
 from pathlib import Path
@@ -5,6 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.gold.seleksi_gold import pilih_satu_nilai_gold
+from src.gold.rekonsiliasi_nasional import buat_tabel_nasional_gold
 
 
 DIR_GOLD = Path("data/gold")
@@ -23,6 +25,8 @@ def jalankan(silver):
     gold_provinsi = hasil_seleksi["gold_provinsi"]
     gold_nasional = hasil_seleksi["gold_nasional"]
     ringkasan_aturan = hasil_seleksi["ringkasan_aturan"]
+
+    gold_nasional = buat_tabel_nasional_gold(gold_nasional)
 
     # 2. Membuat direktori Gold
     DIR_GOLD.mkdir(parents=True, exist_ok=True)
