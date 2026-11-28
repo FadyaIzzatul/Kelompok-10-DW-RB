@@ -70,6 +70,35 @@ Hasil rekonsiliasi nasional disimpan pada `data/gold/rekonsiliasi_nasional_kasus
 
 Perbedaan nilai antarseri perlu dianalisis berdasarkan definisi indikator, metode pengukuran, periode pembaruan atau vintage, serta cakupan dan granularitas data. Oleh karena itu, selisih antarseri tidak langsung dianggap sebagai kesalahan data. Khusus indikator perkawinan anak, batas umur yang digunakan pada seri BPS dan WDI perlu diperhatikan sebelum dilakukan perbandingan.
 
+### Hasil Rekonsiliasi dan Analisis Selisih
+
+Rekonsiliasi dilakukan dengan membandingkan seri utama BPS dengan seri pembanding nasional dari ILOSTAT dan WDI pada periode yang memiliki data di kedua sumber. Selisih dihitung menggunakan rumus nilai BPS dikurangi nilai pembanding dan dinyatakan dalam poin persentase (pp).
+
+| Pasangan seri | Periode | Nilai BPS (%) | Nilai pembanding (%) | Selisih (pp) | Kategori |
+|---|---:|---:|---:|---:|---|
+| `var2003` – `SDG_T552_NOC_RT` | 2015 | 22,320 | 22,379 | -0,059 | Definisi |
+| `var2003` – `SDG_T552_NOC_RT` | 2016 | 23,600 | 44,780 | -21,180 | Tidak terjelaskan |
+| `var2003` – `SDG_T552_NOC_RT` | 2017 | 26,560 | 27,459 | -0,899 | Definisi |
+| `var2003` – `SDG_T552_NOC_RT` | 2019 | 30,370 | 29,567 | +0,803 | Definisi |
+| `var2003` – `SDG_T552_NOC_RT` | 2020 | 33,080 | 32,614 | +0,466 | Definisi |
+| `var2003` – `SDG_T552_NOC_RT` | 2021 | 32,500 | 32,438 | +0,062 | Definisi |
+| `var2003` – `SDG_T552_NOC_RT` | 2022 | 32,260 | 31,665 | +0,595 | Definisi |
+| `var2003` – `SDG_T552_NOC_RT` | 2023 | 35,020 | 33,133 | +1,887 | Definisi |
+| `var2003` – `SDG_0552_NOC_RT` | 2023 | 35,020 | 24,895 | +10,125 | Definisi |
+| `var1360` – `SP.M18.2024.FE.ZS` | 2017 | 11,540 | 16,300 | -4,760 | Metode |
+
+Perbedaan pada indikator `var2003` dan `SDG_T552_NOC_RT` berkaitan dengan definisi dan cakupan pengukuran posisi manajerial pada masing-masing sumber. Selisih terbesar terjadi pada 2016, yaitu -21,180 poin persentase. Penyebab khusus perbedaan tersebut belum dapat dipastikan berdasarkan metadata yang tersedia sehingga dikategorikan tidak terjelaskan. Sementara itu, `SDG_0552_NOC_RT` memiliki cakupan senior dan middle management, berbeda dengan `SDG_T552_NOC_RT` yang mencakup total management. Oleh karena itu, kedua seri ILOSTAT dipertahankan secara terpisah.
+
+Pada indikator perkawinan anak, perbandingan `var1360` dengan `SP.M18.2024.FE.ZS` pada 2017 menghasilkan selisih -4,760 poin persentase. Perbedaan dikategorikan sebagai metode karena data berasal dari sumber survei dan proses pengukuran yang berbeda. Indikator WDI mengukur perempuan usia 20–24 tahun yang pertama kali menikah sebelum usia 18 tahun.
+
+Secara keseluruhan, terdapat 10 observasi perbandingan pada 8 periode unik. Seri `SG.GEN.PARL.ZS` digunakan sebagai indikator konteks keterwakilan perempuan di parlemen dan tidak dimasukkan ke dalam perhitungan selisih. Perbedaan antarseri tetap dipertahankan dan tidak dipaksakan agar bernilai sama karena setiap sumber memiliki definisi, metode, dan cakupan pengukuran masing-masing.
+
+### Penelusuran Asal Data dan Keputusan
+
+Setiap angka dalam hasil rekonsiliasi dapat ditelusuri melalui kombinasi kode seri dan periode pada `data/gold/tabel_nasional_gold.csv`. Tabel tersebut mencatat kolom `sumber` dan `asal_nasional` untuk menunjukkan sumber serta cakupan asal observasi, `_berkas_raw` untuk menunjukkan berkas sumber, dan `_sha256_raw` sebagai identitas hash berkas untuk pemeriksaan integritas data.
+
+Keputusan penyeragaman kode dan satuan seri dapat diperiksa pada `log-keputusan.csv`, khususnya K-003 sampai K-007. Pemisahan definisi seri ILOSTAT tercatat pada K-018, sedangkan aturan seleksi dan pembentukan Gold tercatat pada K-015 sampai K-017. Dengan pencatatan tersebut, angka dan keputusan yang digunakan dalam rekonsiliasi dapat diperiksa kembali berdasarkan sumbernya.
+
 ## Validasi dan reproduksibilitas
 
 Validasi dasar yang tercatat pada `reports/validasi.md` menunjukkan **5 dari 5 pemeriksaan berhasil lolos**. Pemeriksaan ini digunakan untuk memastikan data hasil pengolahan memenuhi aturan validasi yang telah ditetapkan.
